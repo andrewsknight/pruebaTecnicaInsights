@@ -1,0 +1,36 @@
+# Grafana datasources configuration for Call Assignment System
+
+apiVersion: 1
+
+datasources:
+  # Prometheus datasource for metrics
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      httpMethod: POST
+      queryTimeout: 60s
+      timeInterval: 15s
+
+  # PostgreSQL datasource for detailed analytics
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    database: call_assignment
+    user: user
+    secureJsonData:
+      password: password
+    jsonData:
+      sslmode: disable
+      maxOpenConns: 10
+      maxIdleConns: 2
+      connMaxLifetime: 14400
+    editable: true
+
+  # Example queries for PostgreSQL datasource:
+  # SELECT COUNT(*) as total_calls, call_type FROM calls WHERE created_at > NOW() - INTERVAL '1 hour' GROUP BY call_type
+  # SELECT agent_type, AVG(assignment_time_ms) as avg_time FROM assignments a JOIN agents ag ON a.agent_id = ag.id WHERE a.created_at > NOW() - INTERVAL '1 hour' GROUP BY agent_type

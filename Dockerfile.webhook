@@ -1,0 +1,119 @@
+# Simple webhook receiver for testing
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install minimal dependencies for webhook receiver
+RUN pip install fastapi uvicorn
+
+# Create simple webhook receiver
+RUN cat > webhook_receiver.py << 'EOF'
+#!/usr/bin/env python3
+"""
+Simple webhook receiver for testing Call Assignment System
+"""
+
+import os
+import json
+from datetime import datetime
+from fastapi import FastAPI, Request
+import uvicorn
+
+app = FastAPI(title="Webhook Receiver", description="Test webhook receiver for Call Assignment System")
+
+# Store received webhooks in memory (for demo purposes)
+received_webhooks = []
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+
+@app.post("/webhook")
+async def receive_webhook(request: Request):
+    """Receive webhook from Call Assignment System"""
+    try:
+        # Parse JSON payload
+        payload = await request.json()
+        
+        # Add timestamp and headers
+        webhook_data = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "headers": dict(request.headers),
+            "payload": payload
+        }
+        
+        # Store webhook (in production, this would go to a database or queue)
+        received_webhooks.append(webhook_data)
+        
+        # Keep only last 1000 webhooks
+        if len(received_webhooks) > 1000:
+            received_webhooks.pop(0)
+        
+        # Log the webhook
+        event_type = payload.get("event_type", "unknown")
+        print(f"[{datetime.utcnow()}] Received webhook: {event_type}")
+        print(f"Payload: {json.dumps(payload, indent=2)}")
+        
+        return {"status": "received", "timestamp": datetime.utcnow().isoformat()}
+        
+    except Exception as e:
+        print(f"Error processing webhook: {str(e)}")
+        return {"status": "error", "message": str(e)}, 400
+
+@app.get("/webhooks")
+async def get_received_webhooks(limit: int = 50):
+    """Get recently received webhooks"""
+    return {
+        "total_received": len(received_webhooks),
+        "webhooks": received_webhooks[-limit:] if limit else received_webhooks
+    }
+
+@app.get("/webhooks/stats")
+async def get_webhook_stats():
+    """Get webhook statistics"""
+    if not received_webhooks:
+        return {"total": 0, "by_event_type": {}}
+    
+    # Count by event type
+    event_counts = {}
+    for webhook in received_webhooks:
+        event_type = webhook.get("payload", {}).get("event_type", "unknown")
+        event_counts[event_type] = event_counts.get(event_type, 0) + 1
+    
+    return {
+        "total": len(received_webhooks),
+        "by_event_type": event_counts,
+        "first_received": received_webhooks[0]["timestamp"] if received_webhooks else None,
+        "last_received": received_webhooks[-1]["timestamp"] if received_webhooks else None
+    }
+
+@app.delete("/webhooks")
+async def clear_webhooks():
+    """Clear all received webhooks"""
+    global received_webhooks
+    count = len(received_webhooks)
+    received_webhooks.clear()
+    return {"message": f"Cleared {count} webhooks"}
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8001))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+EOF
+
+# Make it executable
+RUN chmod +x webhook_receiver.py
+
+# Create non-root user
+RUN useradd -m -u 1000 webhookuser && chown -R webhookuser:webhookuser /app
+USER webhookuser
+
+# Expose port
+EXPOSE 8001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8001/health || exit 1
+
+# Default command
+CMD ["python", "webhook_receiver.py"]
