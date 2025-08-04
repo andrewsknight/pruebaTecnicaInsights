@@ -5,11 +5,11 @@ from typing import List, Dict, Any
 from datetime import datetime
 import logging
 
-from ..domain.entities.agent import Agent, AgentStatus
-from ..domain.entities.call import Call, CallStatus
-from ..domain.repositories.agent_repository import AgentRepository
-from ..application.orchestrator import call_orchestrator
-from ..config.settings import settings
+from domain.entities.agent import Agent, AgentStatus
+from domain.entities.call import Call, CallStatus
+from domain.repositories.agent_repository import AgentRepository
+from application.orchestrator import call_orchestrator
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +237,7 @@ class EventGenerator:
                 await self.agent_repository.delete(agent.id)
             
             # Clear Redis data
-            from ..infrastructure.cache.redis_client import redis_client
+            from infrastructure.cache.redis_client import redis_client
             await redis_client.clear_all_data()
             
             logger.info("Test data cleanup completed")

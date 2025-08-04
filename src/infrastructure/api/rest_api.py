@@ -7,11 +7,11 @@ import logging
 import uuid
 import asyncio
 
-from ...domain.entities.agent import Agent, AgentStatus
-from ...domain.entities.call import Call, CallStatus, QualificationResult
-from ...domain.repositories.agent_repository import AgentRepository
-from ...application.orchestrator import call_orchestrator
-from ...config.settings import settings
+from domain.entities.agent import Agent, AgentStatus
+from domain.entities.call import Call, CallStatus, QualificationResult
+from domain.repositories.agent_repository import AgentRepository
+from application.orchestrator import call_orchestrator
+from config.settings import settings
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -90,8 +90,8 @@ agent_repository = AgentRepository()
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
-    from ...infrastructure.database.connection import db_connection
-    from ...infrastructure.cache.redis_client import redis_client
+    from infrastructure.database.connection import db_connection
+    from infrastructure.cache.redis_client import redis_client
     
     logger.info("Starting Call Assignment System...")
     
@@ -108,8 +108,8 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
-    from ...infrastructure.database.connection import db_connection
-    from ...infrastructure.cache.redis_client import redis_client
+    from infrastructure.database.connection import db_connection
+    from infrastructure.cache.redis_client import redis_client
     
     logger.info("Shutting down Call Assignment System...")
     
@@ -122,7 +122,7 @@ async def shutdown_event():
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check():
     """Health check endpoint"""
-    from ...infrastructure.cache.redis_client import redis_client
+    from infrastructure.cache.redis_client import redis_client
     
     return {
         "status": "healthy",
@@ -195,7 +195,7 @@ async def cancel_call(call_id: str):
 async def get_call(call_id: str):
     """Get call details"""
     try:
-        from ...infrastructure.cache.redis_client import redis_client
+        from infrastructure.cache.redis_client import redis_client
         
         call_data = await redis_client.get_call_status(call_id)
         
@@ -376,7 +376,7 @@ async def get_system_status():
 async def get_metrics():
     """Get system metrics"""
     try:
-        from ...infrastructure.cache.redis_client import redis_client
+        from infrastructure.cache.redis_client import redis_client
         
         metrics = await redis_client.get_all_metrics()
         return {

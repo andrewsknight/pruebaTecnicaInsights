@@ -1,181 +1,286 @@
-import redis.asyncio as redis
-import json
-from typing import List, Dict, Optional, Any
+from abc import ABC, abstractmethod
+from typing import List, Optional
+from sqlalchemy import select, update, delete
+from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
+import uuid
 
-from ...config.settings import settings
-from ...domain.entities.agent import Agent, AgentStatus
-from ...domain.entities.call import Call, CallStatus
+from domain.entities.agent import Agent, AgentStatus
+from infrastructure.database.models import AgentModel
+from infrastructure.database.connection import db_connection
+from infrastructure.cache.redis_client import redis_client
 
-class RedisClient:
-    """Redis client for real-time state management"""
+class AgentRepositoryInterface(ABC):
+    """Abstract interface for agent repository"""
+    
+    @abstractmethod
+    async def save(self, agent: Agent) -> Agent:
+        """Save or update an agent"""
+        pass
+    
+    @abstractmethod
+    async def find_by_id(self, agent_id: str) -> Optional[Agent]:
+        """Find agent by ID"""
+        pass
+    
+    @abstractmethod
+    async def find_all(self) -> List[Agent]:
+        """Find all agents"""
+        pass
+    
+    @abstractmethod
+    async def find_available(self) -> List[Agent]:
+        """Find all available agents"""
+        pass
+    
+    @abstractmethod
+    async def delete(self, agent_id: str) -> bool:
+        """Delete agent"""
+        pass
+
+class AgentRepository(AgentRepositoryInterface):
+    """PostgreSQL + Redis implementation of agent repository"""
     
     def __init__(self):
-        self.redis: Optional[redis.Redis] = None
+        pass
     
-    async def initialize(self):
-        """Initialize Redis connection"""
-        self.redis = redis.from_url(
-            settings.redis_url,
-            encoding="utf-8",
-            decode_responses=True,
-            socket_keepalive=True,
-            socket_keepalive_options={},
-            health_check_interval=30
+    def _model_to_entity(self, model: AgentModel) -> Agent:
+        """Convert database model to domain entity"""
+        return Agent(
+            id=str(model.id),  # Ensure string conversion
+            name=model.name or "",
+            agent_type=model.agent_type or "",
+            status=AgentStatus(model.status.value if hasattr(model.status, 'value') else model.status),
+            last_call_end_time=model.last_call_end_time,
+            current_call_id=str(model.current_call_id) if model.current_call_id else None,
+            created_at=model.created_at or datetime.utcnow(),
+            updated_at=model.updated_at or datetime.utcnow()
         )
-        
-        # Test connection
-        await self.redis.ping()
     
-    async def close(self):
-        """Close Redis connection"""
-        if self.redis:
-            await self.redis.close()
-    
-    # Agent operations
-    async def set_agent_status(self, agent: Agent):
-        """Set agent status in Redis"""
-        key = f"agent:{agent.id}:status"
-        data = {
-            "id": agent.id,
-            "name": agent.name,
-            "agent_type": agent.agent_type,
-            "status": agent.status.value,
-            "last_call_end_time": agent.last_call_end_time.isoformat() if agent.last_call_end_time else None,
-            "current_call_id": agent.current_call_id,
-            "updated_at": agent.updated_at.isoformat(),
-            "idle_time_seconds": agent.get_idle_time_seconds()
-        }
+    def _entity_to_model(self, agent: Agent, model: Optional[AgentModel] = None) -> AgentModel:
+        """Convert domain entity to database model"""
+        if model is None:
+            model = AgentModel()
         
-        await self.redis.hset(key, mapping=data)
-        
-        # Update available agents sorted set if agent is available
-        if agent.is_available():
-            await self.redis.zadd(
-                "available_agents",
-                {agent.id: agent.get_idle_time_seconds()}
-            )
+        # Handle UUID conversion properly
+        if isinstance(agent.id, str):
+            try:
+                model.id = uuid.UUID(agent.id) if agent.id else uuid.uuid4()
+            except ValueError:
+                model.id = uuid.uuid4()
         else:
-            await self.redis.zrem("available_agents", agent.id)
-    
-    async def get_agent_status(self, agent_id: str) -> Optional[Dict]:
-        """Get agent status from Redis"""
-        key = f"agent:{agent_id}:status"
-        data = await self.redis.hgetall(key)
+            model.id = agent.id or uuid.uuid4()
         
-        if not data:
-            return None
+        model.name = agent.name or ""
+        model.agent_type = agent.agent_type or ""
+        model.status = agent.status or AgentStatus.OFFLINE  # SQLAlchemy will handle enum conversion
+        model.last_call_end_time = agent.last_call_end_time
         
-        return data
-    
-    async def get_available_agents(self, limit: int = None) -> List[str]:
-        """Get available agents sorted by idle time (longest first)"""
-        if limit:
-            agent_ids = await self.redis.zrevrange("available_agents", 0, limit - 1)
+        # Handle current_call_id UUID conversion
+        if agent.current_call_id:
+            try:
+                if isinstance(agent.current_call_id, str):
+                    model.current_call_id = uuid.UUID(agent.current_call_id)
+                else:
+                    model.current_call_id = agent.current_call_id
+            except ValueError:
+                model.current_call_id = None
         else:
-            agent_ids = await self.redis.zrevrange("available_agents", 0, -1)
+            model.current_call_id = None
+            
+        model.created_at = agent.created_at or datetime.utcnow()
+        model.updated_at = agent.updated_at or datetime.utcnow()
         
-        return agent_ids
+        return model
     
-    async def remove_agent(self, agent_id: str):
-        """Remove agent from Redis"""
-        await self.redis.delete(f"agent:{agent_id}:status")
-        await self.redis.zrem("available_agents", agent_id)
+    async def save(self, agent: Agent) -> Agent:
+        """Save or update an agent"""
+        async with db_connection.get_session() as session:
+            try:
+                # Convert string ID to UUID for database query
+                if agent.id:
+                    try:
+                        agent_uuid = uuid.UUID(agent.id) if isinstance(agent.id, str) else agent.id
+                    except ValueError:
+                        agent_uuid = uuid.uuid4()
+                        agent.id = str(agent_uuid)
+                else:
+                    agent_uuid = uuid.uuid4()
+                    agent.id = str(agent_uuid)
+                
+                # Check if agent exists
+                stmt = select(AgentModel).where(AgentModel.id == agent_uuid)
+                result = await session.execute(stmt)
+                existing_model = result.scalar_one_or_none()
+                
+                if existing_model:
+                    # Update existing
+                    model = self._entity_to_model(agent, existing_model)
+                else:
+                    # Create new
+                    model = self._entity_to_model(agent)
+                    session.add(model)
+                
+                await session.commit()
+                await session.refresh(model)
+                
+                # Convert back to entity
+                saved_agent = self._model_to_entity(model)
+                
+                # Update Redis cache
+                await redis_client.set_agent_status(saved_agent)
+                
+                return saved_agent
+                
+            except Exception as e:
+                await session.rollback()
+                print(f"Save agent error: {e}")
+                raise e
     
-    # Call operations
-    async def set_call_status(self, call: Call):
-        """Set call status in Redis"""
-        key = f"call:{call.id}:status"
-        data = {
-            "id": call.id,
-            "phone_number": call.phone_number,
-            "call_type": call.call_type,
-            "status": call.status.value,
-            "assigned_agent_id": call.assigned_agent_id or "",
-            "qualification_result": call.qualification_result.value,
-            "created_at": call.created_at.isoformat(),
-            "assigned_at": call.assigned_at.isoformat() if call.assigned_at else "",
-            "completed_at": call.completed_at.isoformat() if call.completed_at else ""
-        }
-        
-        await self.redis.hset(key, mapping=data)
-        
-        # Add to pending calls queue if pending
-        if call.status == CallStatus.PENDING:
-            await self.redis.lpush("pending_calls", call.id)
-    
-    async def get_call_status(self, call_id: str) -> Optional[Dict]:
-        """Get call status from Redis"""
-        key = f"call:{call_id}:status"
-        data = await self.redis.hgetall(key)
-        
-        if not data:
+    async def find_by_id(self, agent_id: str) -> Optional[Agent]:
+        """Find agent by ID"""
+        if not agent_id:
             return None
-        
-        return data
-    
-    async def get_pending_calls(self, count: int = 10) -> List[str]:
-        """Get pending calls"""
-        call_ids = await self.redis.lrange("pending_calls", 0, count - 1)
-        return call_ids
-    
-    async def remove_pending_call(self, call_id: str):
-        """Remove call from pending queue"""
-        await self.redis.lrem("pending_calls", 0, call_id)
-    
-    # Assignment operations
-    async def create_assignment_lock(self, call_id: str, ttl_seconds: int = 5) -> bool:
-        """Create distributed lock for assignment"""
-        key = f"assignment_lock:{call_id}"
-        result = await self.redis.set(key, datetime.utcnow().isoformat(), nx=True, ex=ttl_seconds)
-        return result is not None
-    
-    async def release_assignment_lock(self, call_id: str):
-        """Release assignment lock"""
-        key = f"assignment_lock:{call_id}"
-        await self.redis.delete(key)
-    
-    # Metrics operations
-    async def increment_metric(self, metric_name: str, value: float = 1):
-        """Increment a metric counter"""
-        await self.redis.incrbyfloat(f"metric:{metric_name}", value)
-    
-    async def set_metric(self, metric_name: str, value: float):
-        """Set a metric value"""
-        await self.redis.set(f"metric:{metric_name}", value)
-    
-    async def get_metric(self, metric_name: str) -> Optional[float]:
-        """Get metric value"""
-        value = await self.redis.get(f"metric:{metric_name}")
-        return float(value) if value else None
-    
-    async def get_all_metrics(self) -> Dict[str, float]:
-        """Get all metrics"""
-        keys = await self.redis.keys("metric:*")
-        if not keys:
-            return {}
-        
-        values = await self.redis.mget(keys)
-        metrics = {}
-        
-        for key, value in zip(keys, values):
-            metric_name = key.replace("metric:", "")
-            metrics[metric_name] = float(value) if value else 0.0
-        
-        return metrics
-    
-    # System operations
-    async def health_check(self) -> bool:
-        """Check Redis health"""
+            
         try:
-            await self.redis.ping()
-            return True
-        except Exception:
-            return False
+            # Try Redis first for real-time data
+            redis_data = await redis_client.get_agent_status(agent_id)
+            if redis_data and redis_data.get("id"):
+                return Agent(
+                    id=redis_data["id"],
+                    name=redis_data.get("name", ""),
+                    agent_type=redis_data.get("agent_type", ""),
+                    status=AgentStatus(redis_data.get("status", "OFFLINE")),
+                    last_call_end_time=datetime.fromisoformat(redis_data["last_call_end_time"]) if redis_data.get("last_call_end_time") else None,
+                    current_call_id=redis_data.get("current_call_id"),
+                    updated_at=datetime.fromisoformat(redis_data["updated_at"]) if redis_data.get("updated_at") else datetime.utcnow()
+                )
+        except Exception as redis_error:
+            print(f"Redis lookup failed: {redis_error}")
+        
+        # Fallback to database
+        async with db_connection.get_session() as session:
+            try:
+                agent_uuid = uuid.UUID(agent_id) if isinstance(agent_id, str) else agent_id
+                stmt = select(AgentModel).where(AgentModel.id == agent_uuid)
+                result = await session.execute(stmt)
+                model = result.scalar_one_or_none()
+                
+                if model:
+                    agent = self._model_to_entity(model)
+                    # Update Redis cache
+                    await redis_client.set_agent_status(agent)
+                    return agent
+                
+                return None
+            except Exception as e:
+                print(f"Database lookup failed: {e}")
+                return None
     
-    async def clear_all_data(self):
-        """Clear all data (for testing)"""
-        await self.redis.flushdb()
-
-# Global Redis instance
-redis_client = RedisClient()
+    async def find_all(self) -> List[Agent]:
+        """Find all agents"""
+        async with db_connection.get_session() as session:
+            try:
+                stmt = select(AgentModel).order_by(AgentModel.created_at)
+                result = await session.execute(stmt)
+                models = result.scalars().all()
+                
+                agents = [self._model_to_entity(model) for model in models]
+                
+                # Update Redis cache for all agents
+                for agent in agents:
+                    await redis_client.set_agent_status(agent)
+                
+                return agents
+            except Exception as e:
+                print(f"Find all agents failed: {e}")
+                return []
+    
+    async def find_available(self) -> List[Agent]:
+        """Find all available agents ordered by idle time (longest first)"""
+        try:
+            # Get available agent IDs from Redis (already sorted by idle time)
+            available_agent_ids = await redis_client.get_available_agents()
+            
+            if available_agent_ids:
+                # Get agent details for the available agents
+                agents = []
+                for agent_id in available_agent_ids:
+                    agent = await self.find_by_id(agent_id)
+                    if agent and agent.is_available():
+                        agents.append(agent)
+                return agents
+        except Exception as redis_error:
+            print(f"Redis available agents lookup failed: {redis_error}")
+        
+        # Fallback to database
+        async with db_connection.get_session() as session:
+            try:
+                stmt = select(AgentModel).where(
+                    AgentModel.status == AgentStatus.AVAILABLE
+                ).order_by(AgentModel.last_call_end_time.asc().nulls_first())
+                
+                result = await session.execute(stmt)
+                models = result.scalars().all()
+                
+                agents = [self._model_to_entity(model) for model in models]
+                
+                # Update Redis cache
+                for agent in agents:
+                    await redis_client.set_agent_status(agent)
+                
+                return agents
+            except Exception as e:
+                print(f"Database available agents lookup failed: {e}")
+                return []
+    
+    async def delete(self, agent_id: str) -> bool:
+        """Delete agent"""
+        if not agent_id:
+            return False
+            
+        async with db_connection.get_session() as session:
+            try:
+                agent_uuid = uuid.UUID(agent_id) if isinstance(agent_id, str) else agent_id
+                stmt = delete(AgentModel).where(AgentModel.id == agent_uuid)
+                result = await session.execute(stmt)
+                await session.commit()
+                
+                # Remove from Redis
+                await redis_client.remove_agent(agent_id)
+                
+                return result.rowcount > 0
+            except Exception as e:
+                await session.rollback()
+                print(f"Delete agent failed: {e}")
+                return False
+    
+    async def count_by_status(self, status: AgentStatus) -> int:
+        """Count agents by status"""
+        async with db_connection.get_session() as session:
+            try:
+                stmt = select(AgentModel).where(AgentModel.status == status)
+                result = await session.execute(stmt)
+                models = result.scalars().all()
+                return len(models)
+            except Exception as e:
+                print(f"Count by status failed: {e}")
+                return 0
+    
+    async def update_status(self, agent_id: str, status: AgentStatus) -> bool:
+        """Update agent status"""
+        try:
+            agent = await self.find_by_id(agent_id)
+            if not agent:
+                return False
+            
+            if status == AgentStatus.AVAILABLE:
+                agent.set_available()
+            elif status == AgentStatus.PAUSED:
+                agent.set_paused()
+            
+            await self.save(agent)
+            return True
+        except Exception as e:
+            print(f"Update status failed: {e}")
+            return False

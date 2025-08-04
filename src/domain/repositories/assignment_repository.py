@@ -4,9 +4,9 @@ from sqlalchemy import select, update, delete, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timedelta
 
-from ..entities.assignment import Assignment, AssignmentStatus
-from ...infrastructure.database.models import AssignmentModel
-from ...infrastructure.database.connection import db_connection
+from domain.entities.assignment import Assignment, AssignmentStatus
+from infrastructure.database.models import AssignmentModel
+from infrastructure.database.connection import db_connection
 
 class AssignmentRepositoryInterface(ABC):
     """Abstract interface for assignment repository"""
@@ -145,40 +145,6 @@ class AssignmentRepository(AssignmentRepositoryInterface):
             
             return [self._model_to_entity(model) for model in models]
     
-    async def find_active_assignments(self) -> List[Assignment]:
-        """Find all active assignments"""
-        async with db_connection.get_session() as session:
-            stmt = select(AssignmentModel).where(
-                AssignmentModel.status == AssignmentStatus.ACTIVE.value
-            ).order_by(AssignmentModel.activated_at.desc())
-            
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            
-            return [self._model_to_entity(model) for model in models]
-    
-    async def find_completed_assignments(self, 
-                                       start_date: datetime = None, 
-                                       end_date: datetime = None) -> List[Assignment]:
-        """Find completed assignments within date range"""
-        async with db_connection.get_session() as session:
-            stmt = select(AssignmentModel).where(
-                AssignmentModel.status == AssignmentStatus.COMPLETED.value
-            )
-            
-            if start_date:
-                stmt = stmt.where(AssignmentModel.completed_at >= start_date)
-            
-            if end_date:
-                stmt = stmt.where(AssignmentModel.completed_at <= end_date)
-            
-            stmt = stmt.order_by(AssignmentModel.completed_at.desc())
-            
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            
-            return [self._model_to_entity(model) for model in models]
-    
     async def delete(self, assignment_id: str) -> bool:
         """Delete assignment"""
         async with db_connection.get_session() as session:
@@ -186,130 +152,3 @@ class AssignmentRepository(AssignmentRepositoryInterface):
             result = await session.execute(stmt)
             
             return result.rowcount > 0
-    
-    async def get_assignment_statistics(self, 
-                                      start_date: datetime = None, 
-                                      end_date: datetime = None) -> Dict[str, Any]:
-        """Get assignment statistics"""
-        async with db_connection.get_session() as session:
-            
-            # Base query
-            base_stmt = select(AssignmentModel)
-            
-            if start_date:
-                base_stmt = base_stmt.where(AssignmentModel.created_at >= start_date)
-            
-            if end_date:
-                base_stmt = base_stmt.where(AssignmentModel.created_at <= end_date)
-            
-            # Get all assignments in range
-            result = await session.execute(base_stmt)
-            assignments = [self._model_to_entity(model) for model in result.scalars().all()]
-            
-            if not assignments:
-                return {
-                    "total_assignments": 0,
-                    "by_status": {},
-                    "performance_metrics": {},
-                    "duration_statistics": {}
-                }
-            
-            # Calculate statistics
-            stats = {
-                "total_assignments": len(assignments),
-                "by_status": {},
-                "performance_metrics": {},
-                "duration_statistics": {}
-            }
-            
-            # Count by status
-            for status in AssignmentStatus:
-                count = sum(1 for a in assignments if a.status == status)
-                stats["by_status"][status.value] = count
-            
-            # Performance metrics
-            assignment_times = [a.assignment_time_ms for a in assignments if a.assignment_time_ms is not None]
-            
-            if assignment_times:
-                stats["performance_metrics"] = {
-                    "avg_assignment_time_ms": sum(assignment_times) / len(assignment_times),
-                    "max_assignment_time_ms": max(assignment_times),
-                    "min_assignment_time_ms": min(assignment_times),
-                    "assignments_under_100ms": sum(1 for t in assignment_times if t <= 100),
-                    "performance_compliance_rate": sum(1 for t in assignment_times if t <= 100) / len(assignment_times)
-                }
-            
-            # Duration statistics
-            completed_assignments = [a for a in assignments if a.status == AssignmentStatus.COMPLETED]
-            
-            if completed_assignments:
-                actual_durations = [a.actual_duration_seconds for a in completed_assignments if a.actual_duration_seconds is not None]
-                expected_durations = [a.expected_duration_seconds for a in completed_assignments if a.expected_duration_seconds is not None]
-                
-                if actual_durations:
-                    stats["duration_statistics"] = {
-                        "avg_actual_duration_seconds": sum(actual_durations) / len(actual_durations),
-                        "max_actual_duration_seconds": max(actual_durations),
-                        "min_actual_duration_seconds": min(actual_durations)
-                    }
-                
-                if expected_durations and actual_durations and len(expected_durations) == len(actual_durations):
-                    duration_variances = [abs(actual - expected) for actual, expected in zip(actual_durations, expected_durations)]
-                    stats["duration_statistics"]["avg_duration_variance_seconds"] = sum(duration_variances) / len(duration_variances)
-                    stats["duration_statistics"]["max_duration_variance_seconds"] = max(duration_variances)
-            
-            return stats
-    
-    async def find_assignments_by_performance(self, 
-                                            min_assignment_time_ms: float = None,
-                                            max_assignment_time_ms: float = None) -> List[Assignment]:
-        """Find assignments filtered by performance criteria"""
-        async with db_connection.get_session() as session:
-            stmt = select(AssignmentModel)
-            
-            if min_assignment_time_ms is not None:
-                stmt = stmt.where(AssignmentModel.assignment_time_ms >= min_assignment_time_ms)
-            
-            if max_assignment_time_ms is not None:
-                stmt = stmt.where(AssignmentModel.assignment_time_ms <= max_assignment_time_ms)
-            
-            stmt = stmt.order_by(AssignmentModel.assignment_time_ms.asc())
-            
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            
-            return [self._model_to_entity(model) for model in models]
-    
-    async def count_by_status(self, status: AssignmentStatus) -> int:
-        """Count assignments by status"""
-        async with db_connection.get_session() as session:
-            stmt = select(AssignmentModel).where(AssignmentModel.status == status.value)
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            return len(models)
-    
-    async def get_agent_performance_summary(self, agent_id: str) -> Dict[str, Any]:
-        """Get performance summary for a specific agent"""
-        assignments = await self.find_by_agent_id(agent_id)
-        
-        if not assignments:
-            return {
-                "agent_id": agent_id,
-                "total_assignments": 0,
-                "completed_assignments": 0,
-                "avg_assignment_time_ms": 0,
-                "avg_call_duration_seconds": 0
-            }
-        
-        completed = [a for a in assignments if a.status == AssignmentStatus.COMPLETED]
-        assignment_times = [a.assignment_time_ms for a in assignments if a.assignment_time_ms is not None]
-        call_durations = [a.actual_duration_seconds for a in completed if a.actual_duration_seconds is not None]
-        
-        return {
-            "agent_id": agent_id,
-            "total_assignments": len(assignments),
-            "completed_assignments": len(completed),
-            "avg_assignment_time_ms": sum(assignment_times) / len(assignment_times) if assignment_times else 0,
-            "avg_call_duration_seconds": sum(call_durations) / len(call_durations) if call_durations else 0,
-            "performance_compliance_rate": sum(1 for t in assignment_times if t <= 100) / len(assignment_times) if assignment_times else 0
-        }

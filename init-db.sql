@@ -4,7 +4,13 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create custom types
+-- Drop existing types if they exist (for clean recreation)
+DROP TYPE IF EXISTS agent_status_enum CASCADE;
+DROP TYPE IF EXISTS call_status_enum CASCADE;
+DROP TYPE IF EXISTS qualification_result_enum CASCADE;
+DROP TYPE IF EXISTS assignment_status_enum CASCADE;
+
+-- Create custom types with exact enum values from Python
 CREATE TYPE agent_status_enum AS ENUM ('AVAILABLE', 'BUSY', 'PAUSED', 'OFFLINE');
 CREATE TYPE call_status_enum AS ENUM ('PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'ABANDONED', 'FAILED');
 CREATE TYPE qualification_result_enum AS ENUM ('OK', 'KO', 'PENDING');
@@ -20,10 +26,17 @@ CREATE TABLE IF NOT EXISTS tenants (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Drop existing tables if they exist (for clean recreation)
+DROP TABLE IF EXISTS assignments CASCADE;
+DROP TABLE IF EXISTS calls CASCADE;
+DROP TABLE IF EXISTS agents CASCADE;
+DROP TABLE IF EXISTS system_metrics CASCADE;
+DROP TABLE IF EXISTS test_runs CASCADE;
+
 -- Agents table with partitioning for multi-tenancy
-CREATE TABLE IF NOT EXISTS agents (
+CREATE TABLE agents (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE,
+    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE DEFAULT '00000000-0000-0000-0000-000000000001'::UUID,
     name VARCHAR(255) NOT NULL,
     agent_type VARCHAR(50) NOT NULL,
     status agent_status_enum NOT NULL DEFAULT 'OFFLINE',
@@ -35,9 +48,9 @@ CREATE TABLE IF NOT EXISTS agents (
 );
 
 -- Calls table with partitioning by creation date
-CREATE TABLE IF NOT EXISTS calls (
+CREATE TABLE calls (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE,
+    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE DEFAULT '00000000-0000-0000-0000-000000000001'::UUID,
     phone_number VARCHAR(50) NOT NULL,
     call_type VARCHAR(50) NOT NULL,
     status call_status_enum NOT NULL DEFAULT 'PENDING',
@@ -49,13 +62,13 @@ CREATE TABLE IF NOT EXISTS calls (
     started_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,
     duration_seconds REAL,
-    metadata JSONB DEFAULT '{}'
+    call_metadata JSONB DEFAULT '{}'
 );
 
 -- Assignments table
-CREATE TABLE IF NOT EXISTS assignments (
+CREATE TABLE assignments (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE,
+    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE DEFAULT '00000000-0000-0000-0000-000000000001'::UUID,
     call_id UUID REFERENCES calls(id) ON DELETE CASCADE,
     agent_id UUID REFERENCES agents(id) ON DELETE CASCADE,
     status assignment_status_enum NOT NULL DEFAULT 'PENDING',
@@ -65,11 +78,11 @@ CREATE TABLE IF NOT EXISTS assignments (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     activated_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,
-    metadata JSONB DEFAULT '{}'
+    assignment_metadata JSONB DEFAULT '{}'
 );
 
 -- System metrics table for monitoring
-CREATE TABLE IF NOT EXISTS system_metrics (
+CREATE TABLE system_metrics (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE,
     metric_name VARCHAR(100) NOT NULL,
@@ -78,11 +91,11 @@ CREATE TABLE IF NOT EXISTS system_metrics (
     agent_type VARCHAR(50),
     call_type VARCHAR(50),
     recorded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    metadata JSONB DEFAULT '{}'
+    metrics_metadata JSONB DEFAULT '{}'
 );
 
 -- Test runs table for tracking test executions
-CREATE TABLE IF NOT EXISTS test_runs (
+CREATE TABLE test_runs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     test_name VARCHAR(255) NOT NULL,
     num_calls INTEGER NOT NULL,
@@ -93,7 +106,7 @@ CREATE TABLE IF NOT EXISTS test_runs (
     completed_at TIMESTAMP WITH TIME ZONE,
     status VARCHAR(20) DEFAULT 'RUNNING',
     results_summary JSONB,
-    metadata JSONB DEFAULT '{}'
+    test_metadata JSONB DEFAULT '{}'
 );
 
 -- Performance indexes for high-throughput queries
@@ -263,20 +276,5 @@ $$ LANGUAGE plpgsql;
 -- Create indexes on materialized view
 CREATE UNIQUE INDEX IF NOT EXISTS idx_dashboard_metrics_time 
     ON dashboard_metrics (snapshot_time);
-
--- Grant permissions (adjust as needed for your setup)
--- GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO call_assignment_app;
--- GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO call_assignment_app;
--- GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO call_assignment_app;
-
--- Enable Row Level Security for multi-tenancy (example)
--- ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE calls ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE assignments ENABLE ROW LEVEL SECURITY;
-
--- Example RLS policy (uncomment and adjust for production)
--- CREATE POLICY tenant_isolation_agents ON agents
---     FOR ALL TO call_assignment_app
---     USING (tenant_id = current_setting('app.current_tenant_id')::UUID);
 
 COMMIT;

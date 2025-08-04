@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from .models import Base
-from ...config.settings import settings
+from config.settings import settings
 
 class DatabaseConnection:
     """Database connection manager"""

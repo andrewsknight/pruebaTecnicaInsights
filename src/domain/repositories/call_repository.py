@@ -4,10 +4,10 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
 
-from ..entities.call import Call, CallStatus, QualificationResult
-from ...infrastructure.database.models import CallModel
-from ...infrastructure.database.connection import db_connection
-from ...infrastructure.cache.redis_client import redis_client
+from domain.entities.call import Call, CallStatus, QualificationResult
+from infrastructure.database.models import CallModel
+from infrastructure.database.connection import db_connection
+from infrastructure.cache.redis_client import redis_client
 
 class CallRepositoryInterface(ABC):
     """Abstract interface for call repository"""
@@ -165,23 +165,6 @@ class CallRepository(CallRepositoryInterface):
             
             return calls
     
-    async def find_pending_calls(self) -> List[Call]:
-        """Find pending calls that need assignment"""
-        # Check Redis pending queue first
-        pending_call_ids = await redis_client.get_pending_calls(count=50)
-        
-        calls = []
-        for call_id in pending_call_ids:
-            call = await self.find_by_id(call_id)
-            if call and call.status == CallStatus.PENDING:
-                calls.append(call)
-        
-        # If Redis queue is empty, check database
-        if not calls:
-            calls = await self.find_by_status(CallStatus.PENDING)
-        
-        return calls
-    
     async def delete(self, call_id: str) -> bool:
         """Delete call"""
         async with db_connection.get_session() as session:
@@ -192,79 +175,3 @@ class CallRepository(CallRepositoryInterface):
             await redis_client.remove_pending_call(call_id)
             
             return result.rowcount > 0
-    
-    async def count_by_status(self, status: CallStatus) -> int:
-        """Count calls by status"""
-        async with db_connection.get_session() as session:
-            stmt = select(CallModel).where(CallModel.status == status.value)
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            return len(models)
-    
-    async def find_completed_calls_by_types(self, agent_type: str = None, call_type: str = None) -> List[Call]:
-        """Find completed calls filtered by agent/call types"""
-        async with db_connection.get_session() as session:
-            stmt = select(CallModel).where(
-                CallModel.status == CallStatus.COMPLETED.value
-            )
-            
-            if call_type:
-                stmt = stmt.where(CallModel.call_type == call_type)
-            
-            stmt = stmt.order_by(CallModel.completed_at.desc())
-            
-            result = await session.execute(stmt)
-            models = result.scalars().all()
-            
-            calls = [self._model_to_entity(model) for model in models]
-            
-            # Filter by agent type if specified (requires join with agents)
-            if agent_type:
-                from ...domain.repositories.agent_repository import AgentRepository
-                agent_repo = AgentRepository()
-                
-                filtered_calls = []
-                for call in calls:
-                    if call.assigned_agent_id:
-                        agent = await agent_repo.find_by_id(call.assigned_agent_id)
-                        if agent and agent.agent_type == agent_type:
-                            filtered_calls.append(call)
-                
-                return filtered_calls
-            
-            return calls
-    
-    async def get_call_statistics(self) -> dict:
-        """Get call statistics"""
-        async with db_connection.get_session() as session:
-            # Get counts by status
-            stats = {
-                "total_calls": 0,
-                "by_status": {},
-                "by_call_type": {},
-                "by_qualification": {}
-            }
-            
-            # Count by status
-            for status in CallStatus:
-                count_stmt = select(CallModel).where(CallModel.status == status.value)
-                result = await session.execute(count_stmt)
-                count = len(result.scalars().all())
-                stats["by_status"][status.value] = count
-                stats["total_calls"] += count
-            
-            # Count by call type
-            for call_type in ["llamada_tipo_1", "llamada_tipo_2", "llamada_tipo_3", "llamada_tipo_4"]:
-                count_stmt = select(CallModel).where(CallModel.call_type == call_type)
-                result = await session.execute(count_stmt)
-                count = len(result.scalars().all())
-                stats["by_call_type"][call_type] = count
-            
-            # Count by qualification result
-            for qual in QualificationResult:
-                count_stmt = select(CallModel).where(CallModel.qualification_result == qual.value)
-                result = await session.execute(count_stmt)
-                count = len(result.scalars().all())
-                stats["by_qualification"][qual.value] = count
-            
-            return stats

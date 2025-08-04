@@ -2,9 +2,9 @@ import numpy as np
 from typing import Dict, List, Tuple
 from collections import defaultdict
 
-from ..entities.call import Call, QualificationResult
-from ..entities.agent import Agent
-from ..entities.assignment import Assignment
+from domain.entities.call import Call, QualificationResult
+from domain.entities.agent import Agent
+from domain.entities.assignment import Assignment
 
 class QualificationService:
     """Domain service for call qualification based on conversion matrix"""

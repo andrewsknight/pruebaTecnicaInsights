@@ -2,9 +2,9 @@ from typing import List, Optional
 from datetime import datetime
 import time
 
-from ..entities.agent import Agent, AgentStatus
-from ..entities.call import Call, CallStatus
-from ..entities.assignment import Assignment, AssignmentStatus
+from domain.entities.agent import Agent, AgentStatus
+from domain.entities.call import Call, CallStatus
+from domain.entities.assignment import Assignment, AssignmentStatus
 
 class AssignmentStrategy:
     """Strategy interface for agent assignment"""

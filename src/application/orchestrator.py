@@ -4,15 +4,15 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
 import logging
 
-from ..domain.entities.agent import Agent, AgentStatus
-from ..domain.entities.call import Call, CallStatus, QualificationResult
-from ..domain.entities.assignment import Assignment, AssignmentStatus
-from ..domain.services.assignment_service import AssignmentService
-from ..domain.services.qualification_service import QualificationService
-from ..domain.repositories.agent_repository import AgentRepository
-from ..infrastructure.cache.redis_client import redis_client
-from ..infrastructure.api.webhook_client import WebhookClient
-from ..config.settings import settings
+from domain.entities.agent import Agent, AgentStatus
+from domain.entities.call import Call, CallStatus, QualificationResult
+from domain.entities.assignment import Assignment, AssignmentStatus
+from domain.services.assignment_service import AssignmentService
+from domain.services.qualification_service import QualificationService
+from domain.repositories.agent_repository import AgentRepository
+from infrastructure.cache.redis_client import redis_client
+from infrastructure.api.webhook_client import WebhookClient
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 

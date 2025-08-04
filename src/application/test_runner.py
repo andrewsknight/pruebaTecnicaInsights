@@ -7,14 +7,14 @@ import logging
 from collections import defaultdict
 import statistics
 
-from ..domain.entities.agent import Agent
-from ..domain.entities.call import Call, QualificationResult
-from ..domain.entities.assignment import Assignment
-from ..domain.services.assignment_service import AssignmentService
-from ..domain.services.qualification_service import QualificationService
-from ..application.event_generator import EventGenerator
-from ..application.orchestrator import call_orchestrator
-from ..config.settings import settings
+from domain.entities.agent import Agent
+from domain.entities.call import Call, QualificationResult
+from domain.entities.assignment import Assignment
+from domain.services.assignment_service import AssignmentService
+from domain.services.qualification_service import QualificationService
+from application.event_generator import EventGenerator
+from application.orchestrator import call_orchestrator
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -225,7 +225,7 @@ class TestRunner:
     
     async def _analyze_call_durations(self) -> Dict[str, Any]:
         """Analyze call duration distribution"""
-        from ..infrastructure.cache.redis_client import redis_client
+        from infrastructure.cache.redis_client import redis_client
         
         # This is simplified - in a real system we'd query the database
         # For demo purposes, we'll use metrics from Redis
@@ -305,7 +305,7 @@ class TestRunner:
     
     async def _analyze_assignment_performance(self) -> Dict[str, Any]:
         """Analyze assignment performance metrics"""
-        from ..infrastructure.cache.redis_client import redis_client
+        from infrastructure.cache.redis_client import redis_client
         
         metrics = await redis_client.get_all_metrics()
         
@@ -342,7 +342,7 @@ class TestRunner:
     
     async def _validate_performance_requirements(self) -> Dict[str, Any]:
         """Validate system meets performance requirements"""
-        from ..infrastructure.cache.redis_client import redis_client
+        from infrastructure.cache.redis_client import redis_client
         
         metrics = await redis_client.get_all_metrics()
         

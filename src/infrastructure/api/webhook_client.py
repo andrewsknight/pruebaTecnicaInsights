@@ -4,10 +4,10 @@ import logging
 from typing import Dict, Any
 from datetime import datetime
 
-from ...domain.entities.agent import Agent
-from ...domain.entities.call import Call, QualificationResult
-from ...domain.entities.assignment import Assignment
-from ...config.settings import settings
+from domain.entities.agent import Agent
+from domain.entities.call import Call, QualificationResult
+from domain.entities.assignment import Assignment
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
