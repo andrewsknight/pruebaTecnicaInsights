@@ -19,19 +19,19 @@ services:
       timeout: 5s
       retries: 5
 
-  # Redis Cache
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+  # Redis Cache (commented out - using local Redis)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+  #   volumes:
+  #     - redis_data:/data
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 5s
+  #     timeout: 3s
+  #     retries: 5
 
   # Call Assignment API
   api:
@@ -42,13 +42,11 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/call_assignment
-      - REDIS_URL=redis://redis:6379/0
+      - REDIS_URL=redis://host.docker.internal:6379/0
       - API_HOST=0.0.0.0
       - API_PORT=8000
     depends_on:
       postgres:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     volumes:
       - ./src:/app/src
@@ -108,7 +106,7 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:
+  # redis_data:  # Using local Redis
   prometheus_data:
   grafana_data:
 
