@@ -6,6 +6,9 @@ from datetime import datetime
 import logging
 import uuid
 import asyncio
+# Al inicio del archivo, después de las importaciones:
+from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
+from fastapi.responses import Response
 
 from domain.entities.agent import Agent, AgentStatus
 from domain.entities.call import Call, CallStatus, QualificationResult
@@ -390,6 +393,8 @@ async def get_metrics():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal server error: {str(e)}"
         )
+    
+
 
 # Webhook receiver for testing
 @app.post("/webhook")
@@ -397,3 +402,28 @@ async def receive_webhook(payload: Dict[str, Any]):
     """Receive webhook notifications (for testing purposes)"""
     logger.info(f"Received webhook: {payload.get('event_type', 'unknown')}")
     return {"status": "received", "timestamp": datetime.utcnow().isoformat()}
+
+
+calls_total = Counter('calls_total', 'Total calls processed', ['call_type', 'status'])
+assignment_time_histogram = Histogram('assignment_time_seconds', 'Call assignment time', ['call_type'])
+agents_by_status = Gauge('agents_by_status', 'Number of agents by status', ['status', 'agent_type'])
+
+@app.get("/metrics")
+async def prometheus_metrics():
+    """Prometheus metrics endpoint"""
+    # Actualizar métricas en tiempo real
+    try:
+        status_data = await call_orchestrator.get_system_status()
+        agents_data = status_data.get('agents', {})
+        
+        # Resetear gauge metrics
+        agents_by_status._metrics.clear()
+        
+        # Actualizar métricas de agentes
+        for status, count in agents_data.items():
+            agents_by_status.labels(status=status, agent_type='all').set(count)
+            
+    except Exception as e:
+        logger.error(f"Error updating metrics: {e}")
+    
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)

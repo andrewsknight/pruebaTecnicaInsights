@@ -44,6 +44,8 @@ services:
       - REDIS_URL=redis://localhost:6379/0
       - API_HOST=0.0.0.0
       - API_PORT=8000
+      - WEBHOOK_URL=http://webhook-receiver:8001/webhook  
+
     volumes:
       - ./src:/app/src
       - ./logs:/app/logs
@@ -53,7 +55,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-
   # Mock Webhook Receiver
   webhook-receiver:
     build:
@@ -86,6 +87,7 @@ services:
       - '--web.enable-lifecycle'
     depends_on:
       - api
+    
 
   # Grafana for visualization
   grafana:

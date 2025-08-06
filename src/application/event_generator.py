@@ -177,6 +177,9 @@ class EventGenerator:
                     
                     # Pick random agent
                     agent = random.choice(agents)
+
+                    if agent.status == AgentStatus.BUSY:
+                        continue 
                     
                     # Determine new status based on current status
                     if agent.status == AgentStatus.AVAILABLE:

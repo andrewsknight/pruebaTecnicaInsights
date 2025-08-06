@@ -1,7 +1,0 @@
-BEGIN;
-ALTER TABLE assignments DROP CONSTRAINT IF EXISTS assignments_call_id_fkey;
-ALTER TABLE assignments DROP CONSTRAINT IF EXISTS assignments_agent_id_fkey;
-ALTER TABLE agents ALTER COLUMN id TYPE VARCHAR USING id::text;
-ALTER TABLE calls ALTER COLUMN id TYPE VARCHAR USING id::text;
-ALTER TABLE assignments ALTER COLUMN id TYPE VARCHAR USING id::text;
-COMMIT;
