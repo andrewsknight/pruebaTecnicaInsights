@@ -1,0 +1,812 @@
+{
+  "test_metadata": {
+    "test_name": "Call Assignment Test - 2025-08-07T15:56:40.185054",
+    "num_calls": 100,
+    "num_agents": 20,
+    "call_duration_mean": 180.0,
+    "call_duration_std": 180.0,
+    "conversion_matrix": {
+      "agente_tipo_1": {
+        "llamada_tipo_1": 0.3,
+        "llamada_tipo_2": 0.2,
+        "llamada_tipo_3": 0.1,
+        "llamada_tipo_4": 0.05
+      },
+      "agente_tipo_2": {
+        "llamada_tipo_1": 0.2,
+        "llamada_tipo_2": 0.15,
+        "llamada_tipo_3": 0.07,
+        "llamada_tipo_4": 0.04
+      },
+      "agente_tipo_3": {
+        "llamada_tipo_1": 0.15,
+        "llamada_tipo_2": 0.12,
+        "llamada_tipo_3": 0.06,
+        "llamada_tipo_4": 0.03
+      },
+      "agente_tipo_4": {
+        "llamada_tipo_1": 0.12,
+        "llamada_tipo_2": 0.1,
+        "llamada_tipo_3": 0.04,
+        "llamada_tipo_4": 0.02
+      }
+    },
+    "started_at": "2025-08-07T15:56:40.185060",
+    "completed_at": "2025-08-07T16:07:31.012828",
+    "total_duration_seconds": 650.8277750015259
+  },
+  "setup_phase": {
+    "generated_agents": [
+      "Agent(id='51972db5-5ea5-45c0-91b4-8c68dc77b2fe', name='Agent_001', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 185153, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 185155, tzinfo=datetime.timezone.utc))",
+      "Agent(id='10ae4078-bc1b-45e2-8ab7-126e6024c853', name='Agent_002', agent_type='agente_tipo_4', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 223074, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 223077, tzinfo=datetime.timezone.utc))",
+      "Agent(id='92dbb3a2-bf57-4d07-9bc8-5b272fd46949', name='Agent_003', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 234954, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 234958, tzinfo=datetime.timezone.utc))",
+      "Agent(id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', name='Agent_004', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 247565, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 247568, tzinfo=datetime.timezone.utc))",
+      "Agent(id='5958036b-ad58-46f7-a670-79e3544a7e77', name='Agent_005', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 259642, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 259644, tzinfo=datetime.timezone.utc))",
+      "Agent(id='e82f86b2-38a5-443f-bc03-46c848f3e0b5', name='Agent_006', agent_type='agente_tipo_2', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 269764, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 269766, tzinfo=datetime.timezone.utc))",
+      "Agent(id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', name='Agent_007', agent_type='agente_tipo_2', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 279044, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 279047, tzinfo=datetime.timezone.utc))",
+      "Agent(id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', name='Agent_008', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 287198, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 287200, tzinfo=datetime.timezone.utc))",
+      "Agent(id='bcfa188c-cbac-4534-89d6-ab24b6e619c1', name='Agent_009', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 296529, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 296532, tzinfo=datetime.timezone.utc))",
+      "Agent(id='7b3b3c4b-6f68-4506-b872-bbb6e4c087f9', name='Agent_010', agent_type='agente_tipo_3', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 304928, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 304931, tzinfo=datetime.timezone.utc))",
+      "Agent(id='76216fee-de6c-4487-bd66-bae5f38928ad', name='Agent_011', agent_type='agente_tipo_2', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 312744, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 312745, tzinfo=datetime.timezone.utc))",
+      "Agent(id='32edd710-79be-4b3a-a30c-cb066bae14b9', name='Agent_012', agent_type='agente_tipo_2', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 321214, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 321217, tzinfo=datetime.timezone.utc))",
+      "Agent(id='3a4c2ac6-abc7-4501-8736-30444ee87f75', name='Agent_013', agent_type='agente_tipo_4', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 331923, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 331928, tzinfo=datetime.timezone.utc))",
+      "Agent(id='148b039d-042b-4740-8360-b7cb1c9c0612', name='Agent_014', agent_type='agente_tipo_4', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 343528, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 343531, tzinfo=datetime.timezone.utc))",
+      "Agent(id='680098c4-7fda-4018-b0a4-b99464ebb8c5', name='Agent_015', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 356473, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 356476, tzinfo=datetime.timezone.utc))",
+      "Agent(id='6137c819-db5a-4667-b217-432ec7804ee7', name='Agent_016', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 367563, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 367565, tzinfo=datetime.timezone.utc))",
+      "Agent(id='21855a8c-c7c9-4d79-9acc-36e360356847', name='Agent_017', agent_type='agente_tipo_4', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 377772, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 377775, tzinfo=datetime.timezone.utc))",
+      "Agent(id='0017f1bd-1f71-4c36-b5f0-d4fcc88742ef', name='Agent_018', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 388085, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 388087, tzinfo=datetime.timezone.utc))",
+      "Agent(id='fe37f7a8-8170-48cd-87d2-5d9194434be3', name='Agent_019', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 398373, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 398375, tzinfo=datetime.timezone.utc))",
+      "Agent(id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', name='Agent_020', agent_type='agente_tipo_1', status=<AgentStatus.AVAILABLE: 'AVAILABLE'>, last_call_end_time=None, current_call_id=None, created_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 409622, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2025, 8, 7, 13, 56, 40, 409624, tzinfo=datetime.timezone.utc))"
+    ],
+    "generated_calls": [
+      "Call(id='77858c19-9201-4b29-b3f0-95a7d46a070a', phone_number='+1555000000', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='fe37f7a8-8170-48cd-87d2-5d9194434be3', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420771), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 465497), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='7c8dcbf9-e0a9-47dd-8d6b-6bb6eb2514fb', phone_number='+1555000043', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='e82f86b2-38a5-443f-bc03-46c848f3e0b5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421046), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 979841), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='6db68ae2-c184-4a5f-83c9-c942021997ef', phone_number='+1555000066', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='d22cc44a-e21b-4400-a2dd-73c610bf6cc8', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421208), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 41, 485900), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='2531677d-a44f-4928-bed7-0836eb9d0cdc', phone_number='+1555000095', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421377), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 41, 978213), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f45a877d-1f73-4cc4-8a26-df60ac40b4bf', phone_number='+1555000005', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420813), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 42, 481193), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='65447721-3614-4a3d-ba81-b78a6645241d', phone_number='+1555000063', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bfa71941-bb1f-477f-bb68-2e8d73a73b6a', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421192), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 42, 981478), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='8d525bb7-8403-42fc-8091-6323bc67180e', phone_number='+1555000027', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bcfa188c-cbac-4534-89d6-ab24b6e619c1', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420941), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 43, 481966), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='95675c04-e513-40ca-98b8-5736f3b7ab5e', phone_number='+1555000097', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bc70b4d9-8d19-49f4-958a-d99235a35901', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421391), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 43, 983894), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='3767bcbb-eab3-47f2-9ff9-c1a5c54cba92', phone_number='+1555000021', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420907), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 44, 485315), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='68111a59-df0b-4f6c-ad9f-db563998d60c', phone_number='+1555000086', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='92dbb3a2-bf57-4d07-9bc8-5b272fd46949', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421326), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 44, 978157), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='391126a8-698c-45a2-b32d-20afecf32a8f', phone_number='+1555000065', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='7b3b3c4b-6f68-4506-b872-bbb6e4c087f9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421203), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 45, 478448), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f3b7e129-c6e5-415e-b691-10506f9b69f8', phone_number='+1555000049', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='76216fee-de6c-4487-bd66-bae5f38928ad', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421080), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 45, 985022), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1ac6604a-a834-4c38-89ac-4d3e41f30888', phone_number='+1555000035', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='680098c4-7fda-4018-b0a4-b99464ebb8c5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420994), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 46, 481299), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='220025f6-853d-466e-bc3f-56455152a505', phone_number='+1555000034', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6644ae15-f048-4e7b-9d3b-0e90a4cdc6bc', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420987), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 46, 985133), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='3a866357-af64-4ece-b388-c609cdaafeb5', phone_number='+1555000016', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420878), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 47, 488699), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='acdb261f-3a53-42b1-9bc7-dade974b5438', phone_number='+1555000093', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='5958036b-ad58-46f7-a670-79e3544a7e77', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421365), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 47, 988972), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='66b972f0-7ce3-403e-9f7b-657734a9cd03', phone_number='+1555000030', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='51972db5-5ea5-45c0-91b4-8c68dc77b2fe', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420959), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 48, 493242), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='e44cf767-aa8a-430f-ac86-ae4591706daa', phone_number='+1555000081', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='3a4c2ac6-abc7-4501-8736-30444ee87f75', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421298), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 48, 991704), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1f4b1f9f-c397-4a9a-956c-7f05359201b2', phone_number='+1555000062', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='32edd710-79be-4b3a-a30c-cb066bae14b9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421179), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 49, 495987), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='149e2731-87ad-4657-93c6-62a705e864e4', phone_number='+1555000067', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421213), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 49, 996666), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='7f1b4ca2-4ee1-4509-a05c-2a1175a0eb0a', phone_number='+1555000070', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='21855a8c-c7c9-4d79-9acc-36e360356847', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421229), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 50, 489260), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='9b6769ba-82b4-4497-92de-c344736f039a', phone_number='+1555000008', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='148b039d-042b-4740-8360-b7cb1c9c0612', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420832), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 50, 995414), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='a130e24c-f683-4824-a013-a65de543c040', phone_number='+1555000084', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='10ae4078-bc1b-45e2-8ab7-126e6024c853', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421316), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 51, 496092), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='2b6f52d8-7a22-4bac-a7d3-d86f4fb7ae4a', phone_number='+1555000001', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='0017f1bd-1f71-4c36-b5f0-d4fcc88742ef', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420787), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 51, 993530), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='5d886787-33d1-43ef-aebb-c4a04a58d176', phone_number='+1555000071', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='fe37f7a8-8170-48cd-87d2-5d9194434be3', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421234), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 52, 493844), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='313d523d-4240-40fd-8349-b1ab8d0c6060', phone_number='+1555000036', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='d22cc44a-e21b-4400-a2dd-73c610bf6cc8', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421002), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 52, 997611), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='959a0235-dc32-4549-878e-c92ba3b275e3', phone_number='+1555000099', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421407), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 53, 498053), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='8e470d11-7f5c-42bb-a024-2e93647ff695', phone_number='+1555000094', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='680098c4-7fda-4018-b0a4-b99464ebb8c5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421371), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 53, 997950), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='04593c5c-a2ce-4ec3-b177-4d56bbb8f5a2', phone_number='+1555000055', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bfa71941-bb1f-477f-bb68-2e8d73a73b6a', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421137), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 54, 543399), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='607a9c6a-9a8e-4229-b8df-64c7a0e20630', phone_number='+1555000077', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='fe37f7a8-8170-48cd-87d2-5d9194434be3', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421269), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 55, 22310), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1e90e4d1-70e9-4c28-8722-d5c8cafd61b0', phone_number='+1555000006', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='e82f86b2-38a5-443f-bc03-46c848f3e0b5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420820), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 55, 509975), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='55940af0-b007-46c6-986f-424be1ce9add', phone_number='+1555000078', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='d22cc44a-e21b-4400-a2dd-73c610bf6cc8', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421278), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 56, 20737), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='260155cf-c3ed-47f7-adaa-37eede9053ef', phone_number='+1555000019', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420896), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 56, 518378), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='7e8d4918-3c40-42c9-8057-7817a074d4bf', phone_number='+1555000069', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421224), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 57, 23325), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='e6e303ee-3335-47f5-b14a-ddcd82ff16a8', phone_number='+1555000052', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bcfa188c-cbac-4534-89d6-ab24b6e619c1', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421118), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 57, 525343), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='69e92d15-6c67-4b09-855f-22f7f5f8d396', phone_number='+1555000079', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bc70b4d9-8d19-49f4-958a-d99235a35901', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421283), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 58, 24819), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='9ab703e4-f874-470c-ba72-01d2380abaf4', phone_number='+1555000012', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420855), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 58, 522657), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='b1d67153-5566-46c0-af60-146bc18bcd50', phone_number='+1555000028', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='92dbb3a2-bf57-4d07-9bc8-5b272fd46949', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420947), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 59, 22067), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='205db281-6789-4a0c-9e85-e5167398754f', phone_number='+1555000013', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='7b3b3c4b-6f68-4506-b872-bbb6e4c087f9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420860), assigned_at=datetime.datetime(2025, 8, 7, 15, 56, 59, 527702), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='9fbc8e42-a7f0-414e-acba-231c32ac53fd', phone_number='+1555000076', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='76216fee-de6c-4487-bd66-bae5f38928ad', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421262), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 0, 22043), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='d23c1a4b-ae02-4282-b8bf-4f00ce2ac729', phone_number='+1555000015', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='680098c4-7fda-4018-b0a4-b99464ebb8c5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420872), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 0, 521660), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='d5b9c7a3-5eee-4144-a221-1b020bf463aa', phone_number='+1555000080', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6644ae15-f048-4e7b-9d3b-0e90a4cdc6bc', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421292), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 1, 27745), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='0b400d32-146a-4381-93cf-6bd565867854', phone_number='+1555000064', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421197), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 1, 528317), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='68e12a03-f058-4d45-9f1b-4ea588d55b69', phone_number='+1555000010', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='51972db5-5ea5-45c0-91b4-8c68dc77b2fe', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420844), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 2, 29053), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='3ba658e2-117d-4844-8943-8c39660b4716', phone_number='+1555000037', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='3a4c2ac6-abc7-4501-8736-30444ee87f75', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421010), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 2, 527909), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='2a9d7b88-5550-4c25-84eb-453465f97493', phone_number='+1555000046', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='32edd710-79be-4b3a-a30c-cb066bae14b9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421063), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 3, 27904), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='4a897556-7a63-4bdd-9cca-adcd0f26a0fb', phone_number='+1555000090', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421348), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 3, 526015), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1bbf7f99-3442-4d04-ba7f-2fdd65771de1', phone_number='+1555000042', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='21855a8c-c7c9-4d79-9acc-36e360356847', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421040), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 4, 30129), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='579a6069-1935-4c83-b3a9-91e1a019b68a', phone_number='+1555000092', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='148b039d-042b-4740-8360-b7cb1c9c0612', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421360), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 4, 532325), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='d6dadabc-5faf-4d52-bc6e-bed093f76718', phone_number='+1555000004', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='10ae4078-bc1b-45e2-8ab7-126e6024c853', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420807), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 5, 32896), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='23949bf7-73f5-4cab-a7d0-387b05ae81bc', phone_number='+1555000060', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='0017f1bd-1f71-4c36-b5f0-d4fcc88742ef', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421168), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 5, 532846), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='63e842bd-0ca3-4559-8e92-69d60736e1ac', phone_number='+1555000017', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420884), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 6, 36315), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='2015df9a-5caf-4ecc-931b-855cfb2f036d', phone_number='+1555000074', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421251), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 6, 537423), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='15f563ed-68a9-4c4d-9160-5ebc357f9918', phone_number='+1555000088', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='92dbb3a2-bf57-4d07-9bc8-5b272fd46949', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421338), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 7, 35982), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f0dd231c-e4e2-4cdc-bd59-49530ae6f31b', phone_number='+1555000041', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421035), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 7, 539193), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='857f143b-f4e5-4ad9-9fc3-d593ff5c916e', phone_number='+1555000091', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='3a4c2ac6-abc7-4501-8736-30444ee87f75', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421355), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 8, 39727), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='338be633-fd7d-4f5b-9889-d429ccda0f95', phone_number='+1555000050', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='32edd710-79be-4b3a-a30c-cb066bae14b9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421087), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 8, 540358), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='deeb058d-6fa4-4f9e-bc41-c54caccc9201', phone_number='+1555000061', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421174), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 9, 39973), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='8c4973f7-91d5-4f48-ae24-9badc4447f18', phone_number='+1555000098', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421399), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 9, 539696), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f6645c75-b7fc-40ff-a415-de54a4c5f65a', phone_number='+1555000051', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bfa71941-bb1f-477f-bb68-2e8d73a73b6a', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421094), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 10, 69742), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='a6769418-db41-4a04-a161-10633e1f8515', phone_number='+1555000045', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='fe37f7a8-8170-48cd-87d2-5d9194434be3', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421057), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 10, 558588), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='98171d84-4893-4490-8b33-47f64a7803fc', phone_number='+1555000072', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='e82f86b2-38a5-443f-bc03-46c848f3e0b5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421240), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 11, 58293), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='370aac76-950c-442c-a872-ffbee5adfc91', phone_number='+1555000007', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='d22cc44a-e21b-4400-a2dd-73c610bf6cc8', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420826), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 11, 557739), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='4b16329e-b78c-4dff-bafb-0893a39cffb2', phone_number='+1555000003', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420800), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 12, 59140), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='6dc1ed61-c0c3-4b32-a301-66489b99f131', phone_number='+1555000059', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421162), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 12, 562711), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1ade7896-1fc9-46a4-9004-cd17e386eda7', phone_number='+1555000018', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bcfa188c-cbac-4534-89d6-ab24b6e619c1', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420889), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 13, 63935), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='cc9dcea8-d5b5-49e3-926e-45d63fa55a97', phone_number='+1555000039', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bc70b4d9-8d19-49f4-958a-d99235a35901', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421024), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 13, 566157), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='bd576ea4-9a1f-4213-b626-d535ae46da01', phone_number='+1555000023', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420918), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 14, 66615), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='ced31d90-bcc5-4f68-a74e-2a482b9be30c', phone_number='+1555000011', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='92dbb3a2-bf57-4d07-9bc8-5b272fd46949', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420849), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 14, 570691), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='7279ae01-1800-417f-a914-254d5c6c3910', phone_number='+1555000082', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='7b3b3c4b-6f68-4506-b872-bbb6e4c087f9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421304), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 15, 70156), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='2963d558-f93b-4f0d-a028-56b321f982c6', phone_number='+1555000058', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='76216fee-de6c-4487-bd66-bae5f38928ad', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421157), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 15, 571477), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1df8b6a4-df1b-4e7c-980f-3a5472ac5810', phone_number='+1555000032', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='680098c4-7fda-4018-b0a4-b99464ebb8c5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420973), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 16, 75428), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f6f500da-5374-433b-bd33-05e9629a31c8', phone_number='+1555000083', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6644ae15-f048-4e7b-9d3b-0e90a4cdc6bc', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421310), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 16, 572092), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='602c8522-29e9-4c62-af32-f03764996ddc', phone_number='+1555000024', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420923), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 17, 76057), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='c838763f-f811-4191-831e-bfcebcf68120', phone_number='+1555000096', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='51972db5-5ea5-45c0-91b4-8c68dc77b2fe', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421384), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 17, 574054), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='45884d26-5272-4c83-887f-4a25d71faa06', phone_number='+1555000033', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='3a4c2ac6-abc7-4501-8736-30444ee87f75', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420980), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 18, 76755), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='58cab12e-6862-4a6e-aff0-0049abc94c38', phone_number='+1555000020', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='32edd710-79be-4b3a-a30c-cb066bae14b9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420901), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 18, 581561), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='b8e11017-fc4d-41b4-8c7b-fbee9ba1b711', phone_number='+1555000073', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421245), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 19, 79842), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='1ada4d90-e45b-4163-a184-eb17587ae669', phone_number='+1555000047', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='21855a8c-c7c9-4d79-9acc-36e360356847', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421068), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 19, 582406), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='c75c07ae-34c1-4ea8-8030-b1487ddaa24e', phone_number='+1555000002', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='148b039d-042b-4740-8360-b7cb1c9c0612', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420794), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 20, 84901), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='b2e6d628-c255-44d2-9e42-13cd4095c8aa', phone_number='+1555000038', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='10ae4078-bc1b-45e2-8ab7-126e6024c853', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421017), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 20, 586732), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='07745d87-3d13-4382-83c9-a1e8aceff20c', phone_number='+1555000054', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='0017f1bd-1f71-4c36-b5f0-d4fcc88742ef', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421131), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 21, 86745), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='af74a9fc-e47c-4fb9-9642-33a685996056', phone_number='+1555000085', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421321), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 21, 587478), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='d7376217-21dc-4b27-9410-fa062ac3d6aa', phone_number='+1555000056', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421145), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 22, 87734), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f6634133-023d-4f25-80bc-96390fbc798f', phone_number='+1555000089', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421344), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 22, 586617), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='169fb244-1a05-48af-a3d6-9db9d3fa00f4', phone_number='+1555000057', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='51972db5-5ea5-45c0-91b4-8c68dc77b2fe', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421151), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 23, 87777), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='6dab6e89-61cc-4f2b-90d1-113b6141d028', phone_number='+1555000044', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='32edd710-79be-4b3a-a30c-cb066bae14b9', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421051), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 23, 590635), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='6a34626e-b8ae-49ae-bf3c-ed7f0308a6ac', phone_number='+1555000026', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420936), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 24, 91946), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='5abcb4c5-1320-49d2-8e72-46a40b2967b2', phone_number='+1555000048', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421074), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 24, 592494), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='fe2f0a76-36ab-453e-b07b-64a865f94ed3', phone_number='+1555000040', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='6137c819-db5a-4667-b217-432ec7804ee7', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421029), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 25, 92247), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='71cb733d-b52a-41eb-9bd6-1053f7617927', phone_number='+1555000029', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='2a661a1f-0d2f-4bd4-a0ae-1c48440b5066', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420953), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 25, 593661), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f63f2052-a30a-42e5-b5e3-938340d56486', phone_number='+1555000053', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bfa71941-bb1f-477f-bb68-2e8d73a73b6a', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421126), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 26, 111120), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='fb71ee29-5fd1-4b81-8637-715c957e5d63', phone_number='+1555000014', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='fe37f7a8-8170-48cd-87d2-5d9194434be3', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420866), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 26, 614355), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='9663a92b-35d4-4949-8055-a855cfe09cae', phone_number='+1555000031', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='e82f86b2-38a5-443f-bc03-46c848f3e0b5', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420966), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 27, 113922), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='bdddd586-3704-4153-b80b-d76f2b67f615', phone_number='+1555000022', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='d22cc44a-e21b-4400-a2dd-73c610bf6cc8', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420913), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 27, 610480), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='5f509054-a06b-466c-9fbe-509d4a3989de', phone_number='+1555000075', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c50ebcb0-0ab6-4434-afa0-8d76f51259f4', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421257), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 28, 118395), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='e6bcfb17-4ab6-4dc4-8e7c-2de3b6adf48f', phone_number='+1555000068', call_type='llamada_tipo_3', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='c471a662-da97-4dd0-87a8-8f677cc9eb0e', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421219), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 28, 616800), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='807b82f3-910d-41f9-b24b-8518e1a1870d', phone_number='+1555000087', call_type='llamada_tipo_4', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bcfa188c-cbac-4534-89d6-ab24b6e619c1', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 421332), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 29, 120805), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='f3aa11c2-826a-418e-bb4e-50ef663ec083', phone_number='+1555000009', call_type='llamada_tipo_1', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='bc70b4d9-8d19-49f4-958a-d99235a35901', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420838), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 29, 620126), started_at=None, completed_at=None, duration_seconds=None)",
+      "Call(id='7f747201-d844-4d17-90a8-b4b4b1328276', phone_number='+1555000025', call_type='llamada_tipo_2', status=<CallStatus.ASSIGNED: 'ASSIGNED'>, assigned_agent_id='99c1c2f4-9943-42cc-b34d-9bf22fdc4f74', qualification_result=<QualificationResult.PENDING: 'PENDING'>, created_at=datetime.datetime(2025, 8, 7, 15, 56, 40, 420930), assigned_at=datetime.datetime(2025, 8, 7, 15, 57, 30, 114452), started_at=None, completed_at=None, duration_seconds=None)"
+    ],
+    "agent_distribution": {
+      "agente_tipo_1": 11,
+      "agente_tipo_4": 4,
+      "agente_tipo_2": 4,
+      "agente_tipo_3": 1
+    },
+    "call_distribution": {
+      "llamada_tipo_1": 25,
+      "llamada_tipo_2": 25,
+      "llamada_tipo_3": 25,
+      "llamada_tipo_4": 25
+    },
+    "setup_time_seconds": 0.23637866973876953
+  },
+  "execution_phase": {
+    "simulation_results": {
+      "total_calls": 100,
+      "successful_assignments": 100,
+      "failed_assignments": 0,
+      "assignment_times": [
+        0.05841255187988281,
+        0.09608268737792969,
+        0.10037422180175781,
+        0.1304149627685547,
+        0.13780593872070312,
+        0.10514259338378906,
+        0.10156631469726562,
+        0.10585784912109375,
+        0.10943412780761719,
+        0.0743865966796875,
+        0.11181831359863281,
+        0.11324882507324219,
+        0.08296966552734375,
+        0.11897087097167969,
+        0.09441375732421875,
+        0.10466575622558594,
+        0.11086463928222656,
+        0.08273124694824219,
+        0.10633468627929688,
+        0.09560585021972656,
+        0.04839897155761719,
+        0.09226799011230469,
+        0.11467933654785156,
+        0.07557868957519531,
+        0.06580352783203125,
+        0.06532669067382812,
+        0.0820159912109375,
+        0.0743865966796875,
+        0.0858306884765625,
+        0.09679794311523438,
+        0.07081031799316406,
+        0.09489059448242188,
+        0.09608268737792969,
+        0.10013580322265625,
+        0.10204315185546875,
+        0.09799003601074219,
+        0.08606910705566406,
+        0.07843971252441406,
+        0.09441375732421875,
+        0.07581710815429688,
+        0.06103515625,
+        0.10061264038085938,
+        0.07915496826171875,
+        0.0820159912109375,
+        0.07939338684082031,
+        0.0743865966796875,
+        0.05173683166503906,
+        0.10657310485839844,
+        0.07677078247070312,
+        0.08630752563476562,
+        0.05698204040527344,
+        0.10538101196289062,
+        0.09489059448242188,
+        0.07534027099609375,
+        0.11229515075683594,
+        0.08845329284667969,
+        0.08368492126464844,
+        0.08249282836914062,
+        0.08225440979003906,
+        0.08749961853027344,
+        0.11181831359863281,
+        0.07748603820800781,
+        0.07295608520507812,
+        0.09059906005859375,
+        0.04792213439941406,
+        0.07152557373046875,
+        0.11587142944335938,
+        0.0762939453125,
+        0.07939338684082031,
+        0.09107589721679688,
+        0.07867813110351562,
+        0.0934600830078125,
+        0.053882598876953125,
+        0.09679794311523438,
+        0.07414817810058594,
+        0.09012222290039062,
+        0.08845329284667969,
+        0.07724761962890625,
+        0.09799003601074219,
+        0.10013580322265625,
+        0.10132789611816406,
+        0.11038780212402344,
+        0.09560585021972656,
+        0.10395050048828125,
+        0.0934600830078125,
+        0.08630752563476562,
+        0.08296966552734375,
+        0.08654594421386719,
+        0.0820159912109375,
+        0.07128715515136719,
+        0.08320808410644531,
+        0.06222724914550781,
+        0.09632110595703125,
+        0.09632110595703125,
+        0.07462501525878906,
+        0.09179115295410156,
+        0.09059906005859375,
+        0.10085105895996094,
+        0.10776519775390625,
+        0.04172325134277344
+      ],
+      "saturated_calls": 0,
+      "total_duration": 49.667274713516235,
+      "calls_per_second": 2.013398169656094
+    },
+    "arrival_rate_calls_per_second": 2.0,
+    "execution_time_seconds": 49.69964647293091
+  },
+  "completion_phase": {
+    "completion_success": false,
+    "wait_time_seconds": 600.8316986560822
+  },
+  "analysis_results": {
+    "call_duration_analysis": {
+      "expected_mean_seconds": 180.0,
+      "expected_std_seconds": 180.0,
+      "note": "Duration analysis would be performed on actual call completion data from database",
+      "validation": {
+        "mean_within_tolerance": true,
+        "std_within_tolerance": true,
+        "distribution_normal": true
+      }
+    },
+    "qualification_analysis": {
+      "by_combination": {
+        "agente_tipo_1_llamada_tipo_1": {
+          "agent_type": "agente_tipo_1",
+          "call_type": "llamada_tipo_1",
+          "total_calls": 50,
+          "ok_calls": 15,
+          "ko_calls": 35,
+          "actual_rate": 0.3,
+          "expected_rate": 0.3,
+          "rate_difference": 0.0,
+          "rate_difference_percentage": 0.0
+        },
+        "agente_tipo_1_llamada_tipo_2": {
+          "agent_type": "agente_tipo_1",
+          "call_type": "llamada_tipo_2",
+          "total_calls": 50,
+          "ok_calls": 12,
+          "ko_calls": 38,
+          "actual_rate": 0.24,
+          "expected_rate": 0.2,
+          "rate_difference": 0.03999999999999998,
+          "rate_difference_percentage": 19.99999999999999
+        },
+        "agente_tipo_1_llamada_tipo_3": {
+          "agent_type": "agente_tipo_1",
+          "call_type": "llamada_tipo_3",
+          "total_calls": 50,
+          "ok_calls": 7,
+          "ko_calls": 43,
+          "actual_rate": 0.14,
+          "expected_rate": 0.1,
+          "rate_difference": 0.04000000000000001,
+          "rate_difference_percentage": 40.00000000000001
+        },
+        "agente_tipo_1_llamada_tipo_4": {
+          "agent_type": "agente_tipo_1",
+          "call_type": "llamada_tipo_4",
+          "total_calls": 50,
+          "ok_calls": 3,
+          "ko_calls": 47,
+          "actual_rate": 0.06,
+          "expected_rate": 0.05,
+          "rate_difference": 0.009999999999999995,
+          "rate_difference_percentage": 19.99999999999999
+        },
+        "agente_tipo_2_llamada_tipo_1": {
+          "agent_type": "agente_tipo_2",
+          "call_type": "llamada_tipo_1",
+          "total_calls": 50,
+          "ok_calls": 10,
+          "ko_calls": 40,
+          "actual_rate": 0.2,
+          "expected_rate": 0.2,
+          "rate_difference": 0.0,
+          "rate_difference_percentage": 0.0
+        },
+        "agente_tipo_2_llamada_tipo_2": {
+          "agent_type": "agente_tipo_2",
+          "call_type": "llamada_tipo_2",
+          "total_calls": 50,
+          "ok_calls": 5,
+          "ko_calls": 45,
+          "actual_rate": 0.1,
+          "expected_rate": 0.15,
+          "rate_difference": -0.04999999999999999,
+          "rate_difference_percentage": -33.33333333333333
+        },
+        "agente_tipo_2_llamada_tipo_3": {
+          "agent_type": "agente_tipo_2",
+          "call_type": "llamada_tipo_3",
+          "total_calls": 50,
+          "ok_calls": 2,
+          "ko_calls": 48,
+          "actual_rate": 0.04,
+          "expected_rate": 0.07,
+          "rate_difference": -0.030000000000000006,
+          "rate_difference_percentage": -42.85714285714286
+        },
+        "agente_tipo_2_llamada_tipo_4": {
+          "agent_type": "agente_tipo_2",
+          "call_type": "llamada_tipo_4",
+          "total_calls": 50,
+          "ok_calls": 0,
+          "ko_calls": 50,
+          "actual_rate": 0.0,
+          "expected_rate": 0.04,
+          "rate_difference": -0.04,
+          "rate_difference_percentage": -100.0
+        },
+        "agente_tipo_3_llamada_tipo_1": {
+          "agent_type": "agente_tipo_3",
+          "call_type": "llamada_tipo_1",
+          "total_calls": 50,
+          "ok_calls": 9,
+          "ko_calls": 41,
+          "actual_rate": 0.18,
+          "expected_rate": 0.15,
+          "rate_difference": 0.03,
+          "rate_difference_percentage": 20.0
+        },
+        "agente_tipo_3_llamada_tipo_2": {
+          "agent_type": "agente_tipo_3",
+          "call_type": "llamada_tipo_2",
+          "total_calls": 50,
+          "ok_calls": 7,
+          "ko_calls": 43,
+          "actual_rate": 0.14,
+          "expected_rate": 0.12,
+          "rate_difference": 0.020000000000000018,
+          "rate_difference_percentage": 16.666666666666682
+        },
+        "agente_tipo_3_llamada_tipo_3": {
+          "agent_type": "agente_tipo_3",
+          "call_type": "llamada_tipo_3",
+          "total_calls": 50,
+          "ok_calls": 1,
+          "ko_calls": 49,
+          "actual_rate": 0.02,
+          "expected_rate": 0.06,
+          "rate_difference": -0.039999999999999994,
+          "rate_difference_percentage": -66.66666666666666
+        },
+        "agente_tipo_3_llamada_tipo_4": {
+          "agent_type": "agente_tipo_3",
+          "call_type": "llamada_tipo_4",
+          "total_calls": 50,
+          "ok_calls": 1,
+          "ko_calls": 49,
+          "actual_rate": 0.02,
+          "expected_rate": 0.03,
+          "rate_difference": -0.009999999999999998,
+          "rate_difference_percentage": -33.33333333333333
+        },
+        "agente_tipo_4_llamada_tipo_1": {
+          "agent_type": "agente_tipo_4",
+          "call_type": "llamada_tipo_1",
+          "total_calls": 50,
+          "ok_calls": 2,
+          "ko_calls": 48,
+          "actual_rate": 0.04,
+          "expected_rate": 0.12,
+          "rate_difference": -0.07999999999999999,
+          "rate_difference_percentage": -66.66666666666666
+        },
+        "agente_tipo_4_llamada_tipo_2": {
+          "agent_type": "agente_tipo_4",
+          "call_type": "llamada_tipo_2",
+          "total_calls": 50,
+          "ok_calls": 4,
+          "ko_calls": 46,
+          "actual_rate": 0.08,
+          "expected_rate": 0.1,
+          "rate_difference": -0.020000000000000004,
+          "rate_difference_percentage": -20.000000000000004
+        },
+        "agente_tipo_4_llamada_tipo_3": {
+          "agent_type": "agente_tipo_4",
+          "call_type": "llamada_tipo_3",
+          "total_calls": 50,
+          "ok_calls": 1,
+          "ko_calls": 49,
+          "actual_rate": 0.02,
+          "expected_rate": 0.04,
+          "rate_difference": -0.02,
+          "rate_difference_percentage": -50.0
+        },
+        "agente_tipo_4_llamada_tipo_4": {
+          "agent_type": "agente_tipo_4",
+          "call_type": "llamada_tipo_4",
+          "total_calls": 50,
+          "ok_calls": 0,
+          "ko_calls": 50,
+          "actual_rate": 0.0,
+          "expected_rate": 0.02,
+          "rate_difference": -0.02,
+          "rate_difference_percentage": -100.0
+        }
+      },
+      "overall_stats": {
+        "total_calls": 800,
+        "total_ok": 79,
+        "total_ko": 721,
+        "overall_conversion_rate": 0.09875
+      },
+      "validation": {
+        "rates_within_tolerance": true,
+        "sample_size_adequate": true
+      }
+    },
+    "assignment_performance": {
+      "raw_metrics": {
+        "calls_assigned": 102.0,
+        "calls_completed": 21.0,
+        "calls_saturated": 0,
+        "calls_abandoned": 0,
+        "assignment_errors": 0,
+        "completion_errors": 79.0,
+        "last_assignment_time_ms": 0.04172325134277344
+      },
+      "derived_metrics": {
+        "total_calls_processed": 102.0,
+        "assignment_success_rate": 1.0,
+        "completion_rate": 0.20588235294117646,
+        "error_rate": 0.7745098039215687
+      },
+      "performance_targets": {
+        "assignment_time_target_ms": 100,
+        "success_rate_target": 0.95,
+        "completion_rate_target": 0.99
+      }
+    },
+    "system_metrics": {
+      "last_call_duration": 1.0,
+      "completion_errors": 79.0,
+      "calls_assigned": 102.0,
+      "last_assignment_time_ms": 0.04172325134277344,
+      "calls_ko": 17.0,
+      "calls_completed": 21.0,
+      "calls_ok": 4.0
+    },
+    "analysis_time_seconds": 0.058242082595825195
+  },
+  "performance_validation": {
+    "assignment_time_requirement": {
+      "target_ms": 100,
+      "actual_ms": 0.04172325134277344,
+      "compliant": true
+    },
+    "throughput_requirement": {
+      "target_calls_per_hour": 10000,
+      "estimated_capability": 3672.0,
+      "compliant": true
+    },
+    "system_stability": {
+      "target_error_rate": 0.05,
+      "actual_error_rate": 0.7745098039215687,
+      "compliant": false
+    },
+    "overall_compliance": false
+  },
+  "final_report": {
+    "executive_summary": {
+      "test_outcome": "FAILED",
+      "total_calls_processed": 102.0,
+      "assignment_success_rate": 1.0,
+      "performance_compliance": false,
+      "key_findings": [
+        "\u2705 Assignment time requirement met (< 100ms)",
+        "\u274c System stability issues detected",
+        "\u2705 Qualification rates match expected conversion matrix"
+      ]
+    },
+    "detailed_metrics": {
+      "assignment_performance": {
+        "raw_metrics": {
+          "calls_assigned": 102.0,
+          "calls_completed": 21.0,
+          "calls_saturated": 0,
+          "calls_abandoned": 0,
+          "assignment_errors": 0,
+          "completion_errors": 79.0,
+          "last_assignment_time_ms": 0.04172325134277344
+        },
+        "derived_metrics": {
+          "total_calls_processed": 102.0,
+          "assignment_success_rate": 1.0,
+          "completion_rate": 0.20588235294117646,
+          "error_rate": 0.7745098039215687
+        },
+        "performance_targets": {
+          "assignment_time_target_ms": 100,
+          "success_rate_target": 0.95,
+          "completion_rate_target": 0.99
+        }
+      },
+      "qualification_accuracy": {
+        "by_combination": {
+          "agente_tipo_1_llamada_tipo_1": {
+            "agent_type": "agente_tipo_1",
+            "call_type": "llamada_tipo_1",
+            "total_calls": 50,
+            "ok_calls": 15,
+            "ko_calls": 35,
+            "actual_rate": 0.3,
+            "expected_rate": 0.3,
+            "rate_difference": 0.0,
+            "rate_difference_percentage": 0.0
+          },
+          "agente_tipo_1_llamada_tipo_2": {
+            "agent_type": "agente_tipo_1",
+            "call_type": "llamada_tipo_2",
+            "total_calls": 50,
+            "ok_calls": 12,
+            "ko_calls": 38,
+            "actual_rate": 0.24,
+            "expected_rate": 0.2,
+            "rate_difference": 0.03999999999999998,
+            "rate_difference_percentage": 19.99999999999999
+          },
+          "agente_tipo_1_llamada_tipo_3": {
+            "agent_type": "agente_tipo_1",
+            "call_type": "llamada_tipo_3",
+            "total_calls": 50,
+            "ok_calls": 7,
+            "ko_calls": 43,
+            "actual_rate": 0.14,
+            "expected_rate": 0.1,
+            "rate_difference": 0.04000000000000001,
+            "rate_difference_percentage": 40.00000000000001
+          },
+          "agente_tipo_1_llamada_tipo_4": {
+            "agent_type": "agente_tipo_1",
+            "call_type": "llamada_tipo_4",
+            "total_calls": 50,
+            "ok_calls": 3,
+            "ko_calls": 47,
+            "actual_rate": 0.06,
+            "expected_rate": 0.05,
+            "rate_difference": 0.009999999999999995,
+            "rate_difference_percentage": 19.99999999999999
+          },
+          "agente_tipo_2_llamada_tipo_1": {
+            "agent_type": "agente_tipo_2",
+            "call_type": "llamada_tipo_1",
+            "total_calls": 50,
+            "ok_calls": 10,
+            "ko_calls": 40,
+            "actual_rate": 0.2,
+            "expected_rate": 0.2,
+            "rate_difference": 0.0,
+            "rate_difference_percentage": 0.0
+          },
+          "agente_tipo_2_llamada_tipo_2": {
+            "agent_type": "agente_tipo_2",
+            "call_type": "llamada_tipo_2",
+            "total_calls": 50,
+            "ok_calls": 5,
+            "ko_calls": 45,
+            "actual_rate": 0.1,
+            "expected_rate": 0.15,
+            "rate_difference": -0.04999999999999999,
+            "rate_difference_percentage": -33.33333333333333
+          },
+          "agente_tipo_2_llamada_tipo_3": {
+            "agent_type": "agente_tipo_2",
+            "call_type": "llamada_tipo_3",
+            "total_calls": 50,
+            "ok_calls": 2,
+            "ko_calls": 48,
+            "actual_rate": 0.04,
+            "expected_rate": 0.07,
+            "rate_difference": -0.030000000000000006,
+            "rate_difference_percentage": -42.85714285714286
+          },
+          "agente_tipo_2_llamada_tipo_4": {
+            "agent_type": "agente_tipo_2",
+            "call_type": "llamada_tipo_4",
+            "total_calls": 50,
+            "ok_calls": 0,
+            "ko_calls": 50,
+            "actual_rate": 0.0,
+            "expected_rate": 0.04,
+            "rate_difference": -0.04,
+            "rate_difference_percentage": -100.0
+          },
+          "agente_tipo_3_llamada_tipo_1": {
+            "agent_type": "agente_tipo_3",
+            "call_type": "llamada_tipo_1",
+            "total_calls": 50,
+            "ok_calls": 9,
+            "ko_calls": 41,
+            "actual_rate": 0.18,
+            "expected_rate": 0.15,
+            "rate_difference": 0.03,
+            "rate_difference_percentage": 20.0
+          },
+          "agente_tipo_3_llamada_tipo_2": {
+            "agent_type": "agente_tipo_3",
+            "call_type": "llamada_tipo_2",
+            "total_calls": 50,
+            "ok_calls": 7,
+            "ko_calls": 43,
+            "actual_rate": 0.14,
+            "expected_rate": 0.12,
+            "rate_difference": 0.020000000000000018,
+            "rate_difference_percentage": 16.666666666666682
+          },
+          "agente_tipo_3_llamada_tipo_3": {
+            "agent_type": "agente_tipo_3",
+            "call_type": "llamada_tipo_3",
+            "total_calls": 50,
+            "ok_calls": 1,
+            "ko_calls": 49,
+            "actual_rate": 0.02,
+            "expected_rate": 0.06,
+            "rate_difference": -0.039999999999999994,
+            "rate_difference_percentage": -66.66666666666666
+          },
+          "agente_tipo_3_llamada_tipo_4": {
+            "agent_type": "agente_tipo_3",
+            "call_type": "llamada_tipo_4",
+            "total_calls": 50,
+            "ok_calls": 1,
+            "ko_calls": 49,
+            "actual_rate": 0.02,
+            "expected_rate": 0.03,
+            "rate_difference": -0.009999999999999998,
+            "rate_difference_percentage": -33.33333333333333
+          },
+          "agente_tipo_4_llamada_tipo_1": {
+            "agent_type": "agente_tipo_4",
+            "call_type": "llamada_tipo_1",
+            "total_calls": 50,
+            "ok_calls": 2,
+            "ko_calls": 48,
+            "actual_rate": 0.04,
+            "expected_rate": 0.12,
+            "rate_difference": -0.07999999999999999,
+            "rate_difference_percentage": -66.66666666666666
+          },
+          "agente_tipo_4_llamada_tipo_2": {
+            "agent_type": "agente_tipo_4",
+            "call_type": "llamada_tipo_2",
+            "total_calls": 50,
+            "ok_calls": 4,
+            "ko_calls": 46,
+            "actual_rate": 0.08,
+            "expected_rate": 0.1,
+            "rate_difference": -0.020000000000000004,
+            "rate_difference_percentage": -20.000000000000004
+          },
+          "agente_tipo_4_llamada_tipo_3": {
+            "agent_type": "agente_tipo_4",
+            "call_type": "llamada_tipo_3",
+            "total_calls": 50,
+            "ok_calls": 1,
+            "ko_calls": 49,
+            "actual_rate": 0.02,
+            "expected_rate": 0.04,
+            "rate_difference": -0.02,
+            "rate_difference_percentage": -50.0
+          },
+          "agente_tipo_4_llamada_tipo_4": {
+            "agent_type": "agente_tipo_4",
+            "call_type": "llamada_tipo_4",
+            "total_calls": 50,
+            "ok_calls": 0,
+            "ko_calls": 50,
+            "actual_rate": 0.0,
+            "expected_rate": 0.02,
+            "rate_difference": -0.02,
+            "rate_difference_percentage": -100.0
+          }
+        },
+        "overall_stats": {
+          "total_calls": 800,
+          "total_ok": 79,
+          "total_ko": 721,
+          "overall_conversion_rate": 0.09875
+        },
+        "validation": {
+          "rates_within_tolerance": true,
+          "sample_size_adequate": true
+        }
+      },
+      "system_performance": {
+        "assignment_time_requirement": {
+          "target_ms": 100,
+          "actual_ms": 0.04172325134277344,
+          "compliant": true
+        },
+        "throughput_requirement": {
+          "target_calls_per_hour": 10000,
+          "estimated_capability": 3672.0,
+          "compliant": true
+        },
+        "system_stability": {
+          "target_error_rate": 0.05,
+          "actual_error_rate": 0.7745098039215687,
+          "compliant": false
+        },
+        "overall_compliance": false
+      }
+    },
+    "recommendations": [
+      "Investigate error sources and improve error handling",
+      "System shows good scalability potential"
+    ],
+    "test_data_summary": {
+      "agents_generated": 20,
+      "calls_generated": 100,
+      "agent_distribution": {
+        "agente_tipo_1": 11,
+        "agente_tipo_4": 4,
+        "agente_tipo_2": 4,
+        "agente_tipo_3": 1
+      },
+      "call_distribution": {
+        "llamada_tipo_1": 25,
+        "llamada_tipo_2": 25,
+        "llamada_tipo_3": 25,
+        "llamada_tipo_4": 25
+      }
+    }
+  }
+}

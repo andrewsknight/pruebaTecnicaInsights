@@ -14,7 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d call_assignment"]
+      test: [ "CMD-SHELL", "pg_isready -U user -d call_assignment" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -28,7 +28,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -38,13 +38,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    network_mode: "host"
+    ports:
+      - "8000:8000"
+
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/call_assignment
-      - REDIS_URL=redis://localhost:6379/0
+      - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/call_assignment
+      - REDIS_URL=redis://redis:6379/0
       - API_HOST=0.0.0.0
       - API_PORT=8000
-      - WEBHOOK_URL=http://webhook-receiver:8001/webhook  
+      - WEBHOOK_URL=http://webhook-receiver:8001/webhook
 
     volumes:
       - ./src:/app/src
@@ -65,7 +67,7 @@ services:
     environment:
       - PORT=8001
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8001/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -87,7 +89,6 @@ services:
       - '--web.enable-lifecycle'
     depends_on:
       - api
-    
 
   # Grafana for visualization
   grafana:
@@ -107,6 +108,7 @@ volumes:
   redis_data:
   prometheus_data:
   grafana_data:
+
 
 networks:
   default:

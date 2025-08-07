@@ -2,33 +2,17 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
-rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
-
 scrape_configs:
+  # Prometheus self-monitoring
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
+  # Call Assignment System API - Using exposed port
   - job_name: 'call-assignment-api'
     static_configs:
-      - targets: ['host.docker.internal:8000']
+      - targets: ['api:8000']  # Para Docker Desktop
+      # O para Linux:
+      # - targets: ['172.17.0.1:8000']
     metrics_path: '/metrics'
-    scrape_interval: 5s
-
-  - job_name: 'webhook-receiver'
-    static_configs:
-      - targets: ['webhook-receiver:8001']
-    metrics_path: '/metrics'
-    scrape_interval: 15s
-
-  - job_name: 'redis'
-    static_configs:
-      - targets: ['redis:6379']
-    scrape_interval: 30s
-
-  - job_name: 'postgres'
-    static_configs:
-      - targets: ['postgres:5432']
-    scrape_interval: 30s
+    scrape_interval: 10s
