@@ -4,14 +4,14 @@ import os
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql+asyncpg://user:password@localhost:5432/call_assignment"
+    database_url: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://user:password@localhost:5432/call_assignment")
     
     # Redis
-    redis_url: str = "redis://localhost:6379/0"
+    redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     
     # API
-    api_host: str = "0.0.0.0"
-    api_port: int = 8000
+    api_host: str = os.getenv("API_HOST", "0.0.0.0")
+    api_port: int = int(os.getenv("API_PORT", 8000))
     
     # Assignment timing
     max_assignment_time_ms: int = 100

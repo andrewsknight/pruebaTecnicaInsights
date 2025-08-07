@@ -79,9 +79,7 @@ class EventGenerator:
         self.generated_calls = calls
         return calls
     
-    async def simulate_call_arrivals(self, calls: List[Call], 
-                                   arrival_rate_per_second: float = 1.0,
-                                   max_concurrent: int = 10) -> Dict[str, Any]:
+    async def simulate_call_arrivals(self, calls: List[Call], arrival_rate_per_second: float = 10, max_concurrent: int = 10) -> Dict[str, Any]:
         """
         Simulate call arrivals and assignment
         
@@ -162,8 +160,7 @@ class EventGenerator:
         
         return results
     
-    async def simulate_agent_login_logout(self, agents: List[Agent], 
-                                        login_probability: float = 0.8) -> None:
+    async def simulate_agent_login_logout(self, agents: List[Agent], login_probability: float = 0.8) -> None:
         """Simulate random agent login/logout during test"""
         
         async def agent_status_simulator():

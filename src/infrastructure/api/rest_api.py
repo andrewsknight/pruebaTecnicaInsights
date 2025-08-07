@@ -6,7 +6,6 @@ from datetime import datetime
 import logging
 import uuid
 import asyncio
-# Al inicio del archivo, después de las importaciones:
 from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
 
